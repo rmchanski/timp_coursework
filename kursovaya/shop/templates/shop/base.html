@@ -1,0 +1,39 @@
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>{% block title %}{% trans "RMDeal" %}{% endblock %}</title>
+  <link href="{% static "css/base.css" %}" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="{{ STATIC_URL}}/static/logo/img.png">
+</head>
+<body>
+  <div id="header">
+    <img  class="logo" src="{{ STATIC_URL}}/static/logo/img.png" style="width: 50px; height: 50px;"></a>
+    <a href="/" class="logo">{% trans "RMDeal" %}</a>
+    </div>
+  </div>
+  <div id="subheader">
+    <div class="cart">
+      {% with total_items=cart|length %}
+          {% if cart|length > 0 %}
+            {% trans "Корзина" %}
+            <a href="{% url "cart:cart_detail" %}">
+              {% blocktrans with total_items_plural=total_items|pluralize  total_price=cart.get_total_price %}
+                {{ total_items }} item{{ total_items_plural }},
+                ${{ total_price }}
+              {% endblocktrans %}
+            </a>
+          {% else %}
+            {% trans "Корзина пуста." %}
+          {% endif %}
+        {% endwith %}
+    </div>
+  </div>
+  <div id="content">
+    {% block content %}
+    {% endblock %}
+  </div>
+</body>
+</html>
